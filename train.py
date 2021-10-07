@@ -46,15 +46,12 @@ def train_sae(x,param):
         W.append(w)
         # Se calcula la nueva data
         data = ut.act_sigmoid( np.dot(w, data))
-        
     return(W,data) 
    
 # Beginning ...
 def main():
     param_sae,param_sft = ut.load_config()    
     xe              = ut.load_data_csv('train_x.csv')
-    print(xe.shape)
-
     ye              = ut.load_data_csv('train_y.csv')
     W,Xr            = train_sae(xe,param_sae) 
     Ws, cost        = train_softmax(Xr,ye,param_sft)
