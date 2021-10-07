@@ -73,14 +73,22 @@ def updW_ae(w1,w2,dCdW,mu):
     return(w1,w2)
 
 # Softmax's gradient
-def grad_softmax(x,y,w,lambW):    
-    #complete code    
+def grad_softmax(x,y,w,lambW):
+    z = np.exp( np.dot(w, x) )
+    a = softmax(z)
+    _, N = y.shape
+
+    Cost = (-1/N) * np.sum( np.sum( y * np.log10(a) ) ) 
+    Cost += lambW/2 * np.linalg.norm(w, ord=2) ** 2
+
+    gW = ((-1/N) * (np.dot((y-a),np.transpose(x)))) + (lambW * w)
+
     return(gW,Cost)
 
 # Calculate Softmax
 def softmax(z):
-    #complete code          
-    return(...)
+    a = z / np.sum(z)
+    return a
 
 # Métrica
 def metricas(x,y):
@@ -117,11 +125,14 @@ def load_data_csv(fname):
     return(x)
 
 # save costo of Softmax and weights SAE 
-def save_w_dl(W,Ws,cost):    
-    #complete code 
+def save_w_dl(W,Ws,cost):     
     # Guardar pesos 
-    [np.savez_compressed('w_dl.npz', w, Ws) for w in W ]
-    return
+    #[np.savez_compressed('w_dl.npz', w, Ws) for w in W ]
+    np.savez_compressed('w_dl.npz', W, Ws) 
+
+    archivo = open('costo_softmax.csv', 'w')
+    [ archivo.write(f'{c}\n') for c in cost ]
+    archivo.close()
    
 #load weight of the DL 
 def load_w_dl():

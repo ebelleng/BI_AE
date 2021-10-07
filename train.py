@@ -7,16 +7,22 @@ import my_utility as ut
 	
 # Softmax's training
 def train_softmax(x,y,param):
-    w     = ut.iniW(...)
+    print(f'x shape: {x.shape}')
+    print(f'y shape: {y.shape}')
+    nodos_final, N = y.shape
+    mu = param[1]
+    w, _     = ut.iniW(nodos_final, x)
     costo = []
     for iter in range(param[0]):        
-        # complete code
-        break  
+        gW, c = ut.grad_softmax(x,y,w,lambW=param[2])
+        
+        costo.append(c)
+        w = w - mu*gW
+
     return(w,costo)
 
 # AE's Training 
 def train_ae(x,hnode,MaxIter,mu):
-    print(f'hnode train_ae = {hnode}x{x.shape[0]}')
     w1,w2 = ut.iniW(hnode,x)
 
     for iter in range(MaxIter):        
