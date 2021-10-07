@@ -10,24 +10,25 @@ import numpy  as np
 
 # Initialize weights
 def iniW(hn,x):
-    size_input, _ = x.shape # 375, 5
+    n0, _ = x.shape # 256, 1600
+    n1 = hn
 
-    r = np.sqrt(6 / ( hn + size_input))
-    w1 = np.random.randn((hn, size_input)) * 2* r - r    #dim -> (20x5)
-    w2 = np.random.randn(size_output, hn) * r           #dim -> (1x20)
+    r = np.sqrt(6 / ( n1 + n0))
+    w1 = np.random.rand(n1, n0) * 2* r - r    #dim -> (400x256)
+    w2 = np.random.rand(n0, n1) * 2* r - r    #dim -> (256x400)
        
-    return w1,w2
+    return (w1,w2)
 
 # STEP 1: Feed-forward of AE
 def forward_ae(x,w1,w2):	
-    # Calcula la activación de los Nodos Ocultos
+    # Salida del encoder
     z1 = np.dot(w1, x)
     a1 = act_sigmoid(z1)
-    # Calcula la activación de los Nodos de Salida
+    # Salida del decoder
     z2 = np.dot(w2, a1)
     a2 = act_sigmoid(z2)
-
-    return (a1,a2)
+    
+    return (a1, a2)
 
 #Activation function
 def act_sigmoid(z):
@@ -65,7 +66,8 @@ def gradW_ae(Act,x,w2,e):
     return dCdW1, dCdW2
 
 # Update W of the AE
-def updW_ae(w1,w2,gW1,gW2,mu):
+def updW_ae(w1,w2,dCdW,mu):
+    gW1,gW2 = dCdW
     w1-= mu*gW1
     w2-= mu*gW2
     return(w1,w2)
@@ -116,7 +118,9 @@ def load_data_csv(fname):
 
 # save costo of Softmax and weights SAE 
 def save_w_dl(W,Ws,cost):    
-    #complete code
+    #complete code 
+    # Guardar pesos 
+    [np.savez_compressed('w_dl.npz', w, Ws) for w in W ]
     return
    
 #load weight of the DL 
