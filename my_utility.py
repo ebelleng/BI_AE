@@ -92,8 +92,60 @@ def softmax(z):
 # Métrica
 def metricas(x,y):
     cm     = confusion_matrix(x,y)
-    #complete code              
+    #completar cm
+    
+    return 
+    #complete code  
+    f_score = []
+    for i in range(10):
+        pre = precison(mc,i)
+        #print('precision: ', pre)
+        rec = recall(mc,i)
+        #print('recall: ',rec)
+        ppr = pre*rec
+        #print(ppr)
+        pmr = pre+rec
+        #print(pmr)
+        f = 2*ppr/pmr
+        print(f)
+        f_score = np.append(f_score,f)
+        
+        
+    avgFscore = (1/10)*np.sum(f_score)
+    print(avgFscore)
+ 
+    save_metricas_dl(avgFscore,f_score)    
     return(...)
+
+def precison(mc,r):
+    
+    m = mc[r,r]
+    #print('m= ',m)
+    #print('m= ',mc[r,1])
+    sumMC = np.sum(mc[r,:])
+    #print(sumMC)
+    pre = m/sumMC
+    return pre
+    
+def recall(mc,c):
+        
+    m = mc[c,c]
+    #print('m= ',m)
+    #print('m= ',mc[r,1])
+    sumMC = np.sum(mc[:,c])
+    #print('rec sum:',sumMC)
+    rec = m/sumMC
+    #print('rec: ',rec)
+    return rec 
+
+def save_metricas_dl(avgF, fscore):   
+    fscore = np.append(fscore,avgF)
+    archivo = open('estima_dl.csv', 'w')
+
+    [archivo.write(f'{fscore[i]},') for i in range(len(fscore)) ]
+
+    
+    archivo.close()
     
 #Confusuon matrix
 def confusion_matrix(x,y):
