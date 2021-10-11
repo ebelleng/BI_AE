@@ -149,7 +149,6 @@ def save_metricas_dl(avgF, fscore):
     
 #Confusuon matrix
 def confusion_matrix(x,y):
-    #complete code              
     return(cm)
 
 #------------------------------------------------------------------------
