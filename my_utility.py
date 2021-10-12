@@ -91,28 +91,33 @@ def softmax(z):
 
 # Métrica
 def metricas(x,y):
-    cm     = confusion_matrix(x,y)
-    #completar cm
+    #dados 2 arreglos crea la matriz de confusion y calcula las matericas
+    #actua = [1,0,1,0,0,0,0,1,1,1,2,3,4,5,6,7,8,9]
+    #predi = [0,1,0,0,0,0,0,1,1,1,2,3,4,5,6,7,8,9]
+    #cm = confusion_matrix(actua,predi)
+    cm = confusion_matrix(x,y)
     
-    return 
+    #completar cm
+    print('Matriz de confusion: \n',cm)
+   # return 
     #complete code  
     f_score = []
     for i in range(10):
-        pre = precison(mc,i)
+        pre = precison(cm,i)
         #print('precision: ', pre)
-        rec = recall(mc,i)
+        rec = recall(cm,i)
         #print('recall: ',rec)
         ppr = pre*rec
         #print(ppr)
         pmr = pre+rec
         #print(pmr)
         f = 2*ppr/pmr
-        print(f)
+        print('F-score',i+1,': ',f)
         f_score = np.append(f_score,f)
         
         
     avgFscore = (1/10)*np.sum(f_score)
-    print(avgFscore)
+    print('avg F-score: ',avgFscore)
  
     save_metricas_dl(avgFscore,f_score)    
     return(...)
@@ -133,6 +138,8 @@ def recall(mc,c):
     #print('m= ',m)
     #print('m= ',mc[r,1])
     sumMC = np.sum(mc[:,c])
+    if(sumMC == 0):
+        sumMC = 1/1000
     #print('rec sum:',sumMC)
     rec = m/sumMC
     #print('rec: ',rec)
@@ -149,6 +156,16 @@ def save_metricas_dl(avgF, fscore):
     
 #Confusuon matrix
 def confusion_matrix(x,y):
+    #complete code  
+
+    classes = np.unique(x) # extract the different classes
+    cm = np.zeros((len(classes), len(classes))) # initialize the confusion matrix with zeros
+
+    for i in range(len(classes)):
+        for j in range(len(classes)):
+
+            cm[i, j] = np.sum((x == classes[i]) & (y == classes[j]))
+   
     return(cm)
 
 #------------------------------------------------------------------------
