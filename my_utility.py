@@ -47,8 +47,7 @@ def backward_ae(Act, x, w1, w2, mu):
     dCdW = gradW_ae(Act, x, w2, error)
     # Actualizar los pesos
     w1, w2 = updW_ae(w1, w2, dCdW, mu)
-    # Calcular Error cuadratico medio
-    mse = np.sum(error[0] ** 2) / len(error[0])
+    
     return (w1,w2)
 
 def gradW_ae(Act,x,w2,e):    
@@ -87,7 +86,8 @@ def grad_softmax(x,y,w,lambW):
 
 # Calculate Softmax
 def softmax(z):
-    return z / np.sum(z)
+    z = np.exp(z)
+    return z / z.sum(axis=0)
 
 # Métrica
 def metricas(x,y):
@@ -120,7 +120,6 @@ def metricas(x,y):
     print('avg F-score: ',avgFscore)
  
     save_metricas_dl(avgFscore,f_score)    
-    return(...)
 
 def precison(mc,r):
     

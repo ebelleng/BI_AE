@@ -7,8 +7,6 @@ import my_utility as ut
 	
 # Softmax's training
 def train_softmax(x,y,param):
-    print(f'x shape: {x.shape}')
-    print(f'y shape: {y.shape}')
     nodos_final, N = y.shape
     mu = param[1]
     w, _     = ut.iniW(nodos_final, x)
