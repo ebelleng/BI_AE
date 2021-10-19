@@ -91,13 +91,12 @@ def softmax(z):
 
 # Métrica
 def metricas(x,y):
-    #dados 2 arreglos crea la matriz de confusion y calcula las matericas
-    #actua = [1,0,1,0,0,0,0,1,1,1,2,3,4,5,6,7,8,9]
-    #predi = [0,1,0,0,0,0,0,1,1,1,2,3,4,5,6,7,8,9]
-    #cm = confusion_matrix(actua,predi)
-    cm = confusion_matrix(x,y)
+    #cm = np.identity(10)
     
-    #completar cm
+    posj = posiciones(x)
+    posi = posiciones(y)
+    cm = confusion_matrix(posi,posj)
+    #cm = np.identity(10)
     print('Matriz de confusion: \n',cm)
    # return 
     #complete code  
@@ -144,6 +143,23 @@ def recall(mc,c):
     #print('rec: ',rec)
     return rec 
 
+    #Dada una matriz[C,N], por cada columna obtiene el indice del mayor y lo agrega a un np.array[N]
+def posiciones(arr):
+
+    posiciones = []
+    for c in range(len(arr[1,:])):
+        aux = arr[:,c]
+        maxcol = 0
+        indcol = 0
+        for v in range(len(aux)):
+            if(maxcol < aux[v]): 
+                maxcol = aux[v]
+                indcol = v
+        posiciones.append(indcol) 
+        
+    return np.array(posiciones)            
+        
+
 def save_metricas_dl(avgF, fscore):   
     fscore = np.append(fscore,avgF)
     archivo = open('estima_dl.csv', 'w')
@@ -156,15 +172,12 @@ def save_metricas_dl(avgF, fscore):
 #Confusuon matrix
 def confusion_matrix(x,y):
     #complete code  
-
-    classes = np.unique(x) # extract the different classes
-    cm = np.zeros((len(classes), len(classes))) # initialize the confusion matrix with zeros
-
-    for i in range(len(classes)):
-        for j in range(len(classes)):
-
-            cm[i, j] = np.sum((x == classes[i]) & (y == classes[j]))
-   
+    cm = np.zeros((10,10))
+    
+    for i in range(len(x)):
+        pi = x[i]
+        pj = y[i]
+        cm[pi][pj] = cm[pi][pj] + 1
     return(cm)
 
 #------------------------------------------------------------------------
